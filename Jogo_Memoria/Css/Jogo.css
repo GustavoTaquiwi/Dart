@@ -1,3 +1,40 @@
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-image: url(/Jogo_Memoria/Imagens/vc.jpg);
+  background-size: cover;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 20px 50px;
+  color: bisque;
+}
+.restart {
+  display: flex;
+  padding: 10px 20px;
+  font-size: 15px;
+  color: white;
+  background-color: #05a9db;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px;
+  width: 10%;
+  height: 5px;
+  align-items: center;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0);
+  font-size: 1.2em;
+  width: 100%;
+  max-width: 800px;
+  padding: 30px;
+  margin: 0px 0px 24px;
+  border-radius: 5px;
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -13,6 +50,7 @@
   position: relative;
   transition: all 400ms ease;
   transform-style: preserve-3d;
+  background-color: #ccc;
 }
 .face {
   width: 100%;
@@ -22,6 +60,7 @@
   background-position: center;
   border: 2px solid;
   border-radius: 5px;
+  transition: all 400ms ease;
 }
 .front {
   transform: rotate(180deg);
@@ -30,9 +69,12 @@
   background-image: url(/Jogo_Memoria/Imagens/back.jpeg);
   backface-visibility: hidden;
 }
-.carta:hover {
+
+.reveal-carta {
+  transform: rotateY(180deg);
 }
 
-.reveal-card {
-  transform: rotateY(180deg);
+.disable-card {
+  filter: saturate(0);
+  opacity: 0.5;
 }

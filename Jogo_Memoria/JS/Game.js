@@ -1,4 +1,7 @@
 const grid = document.querySelector(".grid");
+const timer = document.querySelector(".Timer");
+const SpanPlayer = document.querySelector(".Player");
+const btn = document.querySelector(".restart");
 
 const cartas = [
   "ima1",
@@ -18,9 +21,56 @@ const createElement = (tag, className) => {
   element.className = className;
   return element;
 };
+let primeracarta = "";
+let segundacarta = "";
+
+const checkendgame = () => {
+  const disablecards = document.querySelectorAll(".disable-card");
+
+  if (disablecards.length === 20) {
+    clearInterval(timerLoop);
+    alert(
+      `Parabéns, ${SpanPlayer.innerHTML}: Seu tempo foi: ${timer.innerHTML}`
+    );
+  }
+};
+
+const cheackcartas = () => {
+  const primerainformacao = primeracarta.getAttribute("InformacaoCarta");
+  const segundainformacao = segundacarta.getAttribute("InformacaoCarta");
+
+  if (primerainformacao === segundainformacao) {
+    primeracarta.firstChild.classList.add("disable-card");
+    segundacarta.firstChild.classList.add("disable-card");
+
+    primeracarta = "";
+    segundacarta = "";
+
+    checkendgame();
+  } else {
+    setTimeout(() => {
+      primeracarta.classList.remove("reveal-carta");
+      segundacarta.classList.remove("reveal-carta");
+      primeracarta = "";
+      segundacarta = "";
+    }, 500);
+  }
+};
 
 const revealcarta = ({ target }) => {
-  target.parentNode.classList.add("reveal-carta");
+  if (target.parentNode.className.includes("reveal-carta")) {
+    return;
+  }
+
+  if (primeracarta === "") {
+    target.parentNode.classList.add("reveal-carta");
+    primeracarta = target.parentNode;
+  } else if (segundacarta === "") {
+    target.parentNode.classList.add("reveal-carta");
+    segundacarta = target.parentNode;
+
+    cheackcartas();
+  }
 };
 
 const createcarta = (personagem) => {
@@ -35,6 +85,8 @@ const createcarta = (personagem) => {
 
   carta.addEventListener("click", revealcarta);
 
+  carta.setAttribute("InformacaoCarta", personagem);
+
   return carta;
 };
 
@@ -48,4 +100,24 @@ const LoadGame = () => {
     grid.appendChild(carta);
   });
 };
-LoadGame();
+
+let timerLoop;
+
+const starttimer = () => {
+  this.loop = setInterval(() => {
+    const tempoatual = +timer.innerHTML;
+    timer.innerHTML = tempoatual + 1;
+  }, 1000);
+};
+
+const resetGame = () => {
+  window.location.reload();
+};
+
+window.onload = () => {
+  SpanPlayer.innerHTML = localStorage.getItem("Player");
+  starttimer();
+  LoadGame();
+};
+
+btn.addEventListener("click", resetGame);
